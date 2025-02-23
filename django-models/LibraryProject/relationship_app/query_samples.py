@@ -11,13 +11,14 @@ class Command(BaseCommand):
             print(book.title)
 
         # List all books in a library
-        library = Library.objects.get(name='Public Library')
+        library_name = 'Public Library'
+        library = Library.objects.get(name=library_name)
         books_in_library = library.books.all()
-        print("\nBooks in Public Library:")
+        print("\nBooks in {}:".format(library_name))
         for book in books_in_library:
             print(book.title)
 
         # Retrieve the librarian for a library
         librarian = Librarian.objects.get(library=library)
-        print("\nLibrarian for Public Library:")
+        print("\nLibrarian for {}:".format(library_name))
         print(librarian.name)
