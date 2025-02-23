@@ -4,9 +4,10 @@ from relationship_app.models import Author, Book, Library, Librarian
 class Command(BaseCommand):
     def handle(self, *args, **options):
         # Query all books by a specific author
-        author = Author.objects.get(name='John Doe')
+        author_name = 'John Doe'
+        author = Author.objects.get(name=author_name)
         books_by_author = Book.objects.filter(author=author)
-        print("Books by John Doe:")
+        print("Books by {}:".format(author_name))
         for book in books_by_author:
             print(book.title)
 
@@ -22,3 +23,4 @@ class Command(BaseCommand):
         librarian = Librarian.objects.get(library=library)
         print("\nLibrarian for {}:".format(library_name))
         print(librarian.name)
+
