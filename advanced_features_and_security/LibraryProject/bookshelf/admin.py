@@ -14,3 +14,15 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ('title', 'author')
 
 #admin.site.register(Book, BookAdmin)
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import CustomUser
+
+class CustomUserAdmin(UserAdmin):
+    list_display = ('username', 'email', 'date_of_birth')
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('date_of_birth', 'profile_photo')}),
+    )
+
+admin.site.register(CustomUser, CustomUserAdmin)
+
