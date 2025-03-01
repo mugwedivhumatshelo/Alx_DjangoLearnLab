@@ -16,4 +16,24 @@ def create_book(request):
         return redirect('book_list')
     return render(request, 'create_book.html')
 
+from django.db.models import Q
+from django.forms import Form, CharField
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+
+class SearchForm(Form):
+    query = CharField()
+
+def search(request):
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            # Use parameterized query to prevent SQL injection
+            results = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+            return render(request, 'search_results.html', {'results': results})
+    else:
+        form = SearchForm()
+    return render(request, 'search.html', {'form': form})
+
 

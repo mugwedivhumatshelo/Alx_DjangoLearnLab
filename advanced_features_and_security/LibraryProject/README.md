@@ -15,3 +15,7 @@ class Book(models.Model):
             # Permission to delete books
             ("can_delete", "Can delete book"),
         ]
+# settings.py
+# Set DEBUG to False in production to prevent sensitive information disclosure
+DEBUG = False
+
