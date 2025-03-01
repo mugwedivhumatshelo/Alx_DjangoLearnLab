@@ -7,6 +7,15 @@ urlpatterns = [
 ]
 
 from django.urls import path
+from . import views
+
+urlpatterns = [
+    # ... existing URL patterns ...
+    path('books/', views.list_books, name='list_books'),
+    path('library/<pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
+]
+
+from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 
