@@ -28,6 +28,7 @@ class Librarian(models.Model):
 
     def __str__(self):
         return self.name
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -50,6 +51,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
+
 from django.db import models
 
 class Book(models.Model):
