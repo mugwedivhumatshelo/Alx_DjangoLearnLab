@@ -6,7 +6,7 @@ def list_books(request):
     return render(request, 'relationship_app/list_books.html', {'books': books})
 
 from django.shortcuts import render
-from .models import Book, Library
+from .models import Library
 from django.views.generic import DetailView
 
 def list_books(request):
