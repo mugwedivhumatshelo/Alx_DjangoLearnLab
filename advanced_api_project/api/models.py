@@ -1,7 +1,6 @@
 from django.db import models
 
 # Create your models here.
-
 from django.db import models
 
 class Author(models.Model):
@@ -17,3 +16,4 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
