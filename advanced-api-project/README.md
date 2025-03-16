@@ -1,3 +1,69 @@
+Book API Views
+================
+
+This module contains the views for the Book API.
+"""
+
+from rest_framework import generics
+from .models import Book
+from .serializers import BookSerializer
+
+class BookListView(generics.ListAPIView):
+    """
+    List all books.
+
+    * **URL:** `/books/`
+    * **Method:** `GET`
+    * **Permissions:** `AllowAny`
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookDetailView(generics.RetrieveAPIView):
+    """
+    Retrieve a book by ID.
+
+    * **URL:** `/books/<int:pk>/`
+    * **Method:** `GET`
+    * **Permissions:** `AllowAny`
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookCreateView(generics.CreateAPIView):
+    """
+    Create a new book.
+
+    * **URL:** `/books/create/`
+    * **Method:** `POST`
+    * **Permissions:** `IsAuthenticated`
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookUpdateView(generics.UpdateAPIView):
+    """
+    Update an existing book.
+
+    * **URL:** `/books/<int:pk>/update/`
+    * **Method:** `PUT/PATCH`
+    * **Permissions:** `IsAuthenticated`
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookDeleteView(generics.DestroyAPIView):
+    """
+    Delete a book by ID.
+
+    * **URL:** `/books/<int:pk>/delete/`
+    * **Method:** `DELETE`
+    * **Permissions:** `IsAuthenticated`
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
 # api/models.py
 from django.db import models
 
