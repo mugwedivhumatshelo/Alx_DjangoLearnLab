@@ -21,7 +21,7 @@ class BookAPITestCase(APITestCase):
         data = {'title': 'Updated Book', 'author': 'Updated Author', 'publication_year': 2022}
         response = self.client.put(reverse('book-detail', args=[self.book.id]), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Book.objects.get(id=self.book.id).title, 'Updated Book')
+       self.assertEqual(Book.objects.get(id=self.book.id).title, 'Updated Book')
 
     def test_delete_book(self):
         response = self.client.delete(reverse('book-detail', args=[self.book.id]))
@@ -42,4 +42,5 @@ class BookAPITestCase(APITestCase):
         response = self.client.get(reverse('book-list'), {'ordering': 'title'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
+
 
