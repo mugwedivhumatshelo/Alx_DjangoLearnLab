@@ -1,15 +1,18 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
-from .models import Book
+from django.contrib.auth.models import User
+from .models import Book, Author
 from .serializers import BookSerializer
 
 class BookAPITestCase(APITestCase):
     def setUp(self):
+        # Correct indentation here
         self.user = User.objects.create_superuser('testuser', 'testemail@example.com', 'testpassword')
         self.client = APIClient()
-        self.client.force_authenticate(user=self.user)
-        self.book = Book.objects.create(title='Test Book', author='Test Author', publication_year=2020)
+        self.client.login(username='testuser', password='testpassword')
+        self.author = Author.objects.create(name='Test Author')
+        self.book = Book.objects.create(title='Test Book', author=self.author, publication_year=2020)
 
     def test_create_book(self):
         data = {'title': 'New Book', 'author': 'New Author', 'publication_year': 2022}
@@ -21,7 +24,7 @@ class BookAPITestCase(APITestCase):
         data = {'title': 'Updated Book', 'author': 'Updated Author', 'publication_year': 2022}
         response = self.client.put(reverse('book-detail', args=[self.book.id]), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-       self.assertEqual(Book.objects.get(id=self.book.id).title, 'Updated Book')
+        self.assertEqual(Book.objects.get(id=self.book.id).title, 'Updated Book')
 
     def test_delete_book(self):
         response = self.client.delete(reverse('book-detail', args=[self.book.id]))
@@ -42,5 +45,4 @@ class BookAPITestCase(APITestCase):
         response = self.client.get(reverse('book-list'), {'ordering': 'title'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
-
 
