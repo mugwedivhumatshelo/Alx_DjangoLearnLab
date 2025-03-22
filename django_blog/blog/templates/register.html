@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
 </head>
 <body>
+    <script src="{% static 'js/register.js' %}"></script>
     <h1>Register</h1>
     <form method="post">
         {% csrf_token %}
