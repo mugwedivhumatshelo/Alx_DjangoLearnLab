@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Comments</h1>
+  <ul>
+    {% for comment in comment_list %}
+      <li>
+        <p>{{ comment.content }}</p>
+        <p>Author: {{ comment.author.username }}</p>
+        <p>Created at: {{ comment.created_at }}</p>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
