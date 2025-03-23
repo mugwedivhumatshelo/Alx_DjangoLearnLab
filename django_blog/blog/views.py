@@ -1,3 +1,4 @@
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
@@ -8,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Comment
 from .forms import PostForm
 from .forms import CommentForm
+from django.db.models import Q
 
 def register(request):
     if request.method == "POST":
@@ -125,4 +127,12 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == comment.author:
             return True
         return False
+class SearchResultsView(ListView):
+    model = Post
+    template_name = 'blog/search_results.html'
 
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        return Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+        )
