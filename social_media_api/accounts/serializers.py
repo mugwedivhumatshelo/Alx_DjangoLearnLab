@@ -1,13 +1,30 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from .models import User as CustomUser
+from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
 
-class UserSerializer(serializers.ModelSerializer):
+User = get_user_model()
+
+class RegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+    confirm_password = serializers.CharField(write_only=True)
+
     class Meta:
-        model = CustomUser
-        fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'followers']
+        model = User
+        fields = ['username', 'email', 'password', 'confirm_password']
+
+    def create(self, validated_data):
+        del validated_data['confirm_password']
+        user = User.objects.create_user(**validated_data)
+        Token.objects.create(user=user)
+        return user
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
-    password = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        user = User.objects.get(username=data['username'])
+        if not user.check_password(data['password']):
+            raise serializers.ValidationError('Incorrect password')
+        return user
 
